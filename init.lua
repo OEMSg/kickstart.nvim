@@ -151,15 +151,6 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
-  },
-
-  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -167,8 +158,8 @@ require('lazy').setup({
       options = {
         icons_enabled = true,
         theme = 'onedark',
-        -- component_separators = '|',
-        -- section_separators = '',
+        component_separators = '|',
+        section_separators = '',
       },
     },
   },
@@ -243,6 +234,34 @@ vim.wo.number = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+
+vim.opt.nu = true
+vim.opt.relativenumber = true
+
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+vim.opt.smartindent = true
+
+
+-- undotree using DAYS of history
+
+--vim.opt.swapfile = false
+--vim.opt.backup = false
+--vim.opt.undodir = os.gentev("HOME") .. "/.vim/undodir"
+--vim.opt.undofile = true
+
+
+vim.opt.incsearch = true
+
+vim.opt.scrolloff = 8
+vim.opt.isfname:append("@-@")
+
+vim.opt.colorcolumn = "80"
+
+
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
@@ -276,6 +295,53 @@ vim.o.termguicolors = true
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+vim.keymap.set("i", "<C-c>", "<Esc>")
+
+vim.keymap.set("n", "Q", "<nop>")
+
+--move selected lines
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv'")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv'")
+
+--append to previous line
+vim.keymap.set("n", "J", "mzJ`z")
+
+--half-way jump
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+--Surf search
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
+
+--Preserve yank
+vim.keymap.set("x", "<leader>p", "\"_dP")
+
+--Copy to registry
+vim.keymap.set("n", "<leader>y", "\"+y")
+vim.keymap.set("v", "<leader>y", "\"+y")
+vim.keymap.set("n", "<leader>Y", "\"+Y")
+
+--Paste from registry
+--vim.keymap.set("n", "<leader>p", "\"+p")
+--vim.keymap.set("v", "<leader>p", "\"+p")
+
+--Format
+vim.keymap.set("n", "<leader>f", function()
+    vim.lsp.buf.format()
+end)
+
+--quickfix list
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+
+--replace all instances of a word on buffer
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -333,7 +399,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'corn' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -457,6 +523,9 @@ require('which-key').register {
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 }
+
+-- SWI-Prolog LSP config
+require'lspconfig'.prolog_ls.setup{}
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
