@@ -1,3 +1,1 @@
-return {
-  { "luckasRanarison/tree-sitter-hypr" }
-}
+return { 'luckasRanarison/tree-sitter-hypr' }

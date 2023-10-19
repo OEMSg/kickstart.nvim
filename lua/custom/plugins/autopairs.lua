@@ -1,5 +1,5 @@
-return{
-  {'windwp/nvim-autopairs',
+return {
+  'windwp/nvim-autopairs',
     -- Optional dependency
     config = function()
       require("nvim-autopairs").setup {}
@@ -10,5 +10,4 @@ return{
         'confirm_done',
         cmp_autopairs.on_confirm_done()
       ) end,
-  }
 }
